@@ -1,20 +1,122 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
+<div>
+  <div style="text-align:center">
+    <h1>
+      Welcome to {{ title }}!
+    </h1>
+    <hr>
+    <!-- Button trigger modal -->
 
-  <button type="button" class="btn btn-primary">Primary</button>
-  <button type="button" class="btn btn-secondary">Secondary</button>
-  <button type="button" class="btn btn-success">Success</button>
-  <button type="button" class="btn btn-danger">Danger</button>
-  <button type="button" class="btn btn-warning">Warning</button>
-  <button type="button" class="btn btn-info">Info</button>
-  <button type="button" class="btn btn-light">Light</button>
-  <button type="button" class="btn btn-dark">Dark</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+      <i class="fa fa-plus"></i> Add new item
+    </button>
+  </div>
+  <br>
 
-  <button type="button" class="btn btn-link">Link</button>
 
-</div>
 
-<router-outlet></router-outlet>
+
+  <div class="accordion" id="accordionExample">
+    <div class="card" *ngFor="let field of fieldArray; let i = index">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne">
+            <i class="fa fa-caret-down"></i> {{field.name}}
+          </button>
+          <button class="btn btn-danger btn-sm pull-right" type="button" (click)="deleteFieldValue(i)">Delete</button>
+        </h2>
+      </div>
+
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+          <table class="table table-sm">
+            <tbody>
+              <tr>
+                <td>Code</td>
+                <td>
+                  <!-- <input [(ngModel)]="field.code" class="form-control" type="text" name="{{field.code}}" /> -->
+                  {{field.code}}
+                </td>
+              </tr>
+
+              <tr>
+                <td>Name</td>
+                <td>
+                  <!-- <input [(ngModel)]="field.name" class="form-control" type="text" name="{{field.name}}" /> -->
+                  {{field.name}}
+                </td>
+              </tr>
+              <tr>
+                <td>Price</td>
+                <td>
+                  <!-- <input [(ngModel)]="field.price" class="form-control" type="text" name="{{field.price}}" /> -->
+                  {{field.price}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <form name="form" (ngSubmit)="f.form.valid && onSubmit(f)" #f="ngForm">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Add New Item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+            <div class=form-group>
+              <label for="newAttributeCode">Code</label>
+              <input class="form-control" type="text" id="newAttributeCode" [(ngModel)]="newAttribute.code"
+                name="newAttributeCode" #newAttributeCode="ngModel" required (change)="log(newAttributeCode)"
+                [ngStyle]="{'border': newAttributeCode.touched && newAttributeCode.invalid ? '1px solid red' : ''}" />
+              <div *ngIf="newAttributeCode.touched && newAttributeCode.invalid" class="text-danger">
+                <div *ngIf="newAttributeCode.errors.required" class="small">Code is required</div>
+              </div>
+            </div>
+            <div class=form-group>
+              <label for="newAttributeName">Name</label>
+              <input class="form-control" type="text" id="newAttributeName" [(ngModel)]="newAttribute.name"
+                name="newAttributeName" #newAttributeName="ngModel" required
+                [ngStyle]="{'border': newAttributeName.touched && newAttributeName.invalid ? '1px solid red' : ''}" />
+              <div *ngIf="newAttributeName.touched && newAttributeName.invalid" class="text-danger">
+                <div *ngIf="newAttributeName.errors.required" class="small">Name is required</div>
+              </div>
+            </div>
+            <div class=form-group>
+              <label for="newAttributePrice">Price</label>
+              <input class="form-control" type="text" id="newAttributePrice" [(ngModel)]="newAttribute.price"
+                #newAttributePrice="ngModel" name="newAttributePrice" required
+                [ngStyle]="{'border': newAttributePrice.touched && newAttributePrice.invalid ? '1px solid red' : ''}" />
+              <div *ngIf="newAttributePrice.touched && newAttributePrice.invalid" class="text-danger">
+                <div *ngIf="newAttributePrice.errors.required" class="small">Price is required</div>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <div class=form-group>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> &nbsp;
+            <button type="submit" class="btn btn-success" [disabled]="f.invalid">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  </div>
+
+
+  <router-outlet></router-outlet>
